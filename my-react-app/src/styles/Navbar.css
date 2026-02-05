@@ -1,0 +1,106 @@
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 30px;
+    min-height: 180px;
+    /* altura desktop */
+    position: relative;
+    color: white;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+/* Overlay para legibilidad */
+.navbar::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.4);
+    z-index: 0;
+}
+
+.navbar-left,
+.navbar-right {
+    display: flex;
+    align-items: center;
+    z-index: 1;
+}
+
+.logo {
+    height: 100px !important;
+    width: auto !important;
+}
+
+/* Links y botones */
+.navbar-right a,
+.btn-logout {
+    color: white;
+    margin-left: 20px;
+    text-decoration: none;
+    font-weight: bold;
+    transition: color 0.3s;
+}
+
+.navbar-right a:hover,
+.btn-logout:hover {
+    color: #FFD700;
+}
+
+.btn-logout {
+    background: none;
+    border: 1px solid white;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+/* Botón hamburguesa */
+.hamburger {
+    display: none;
+    font-size: 28px;
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hamburger {
+        display: block;
+    }
+
+    .navbar-right {
+        position: absolute;
+        top: 100%;
+        right: 0;
+        background: rgba(0, 0, 0, 0.9);
+        flex-direction: column;
+        width: 200px;
+        max-height: 0;
+        overflow: hidden;
+        transition: max-height 0.3s ease;
+    }
+
+    .navbar-right.open {
+        max-height: 500px;
+    }
+
+    .navbar-right a,
+    .btn-logout {
+        margin: 10px;
+    }
+
+    .logo {
+        height: 70px !important;
+    }
+
+    .navbar {
+        min-height: 120px;
+    }
+}

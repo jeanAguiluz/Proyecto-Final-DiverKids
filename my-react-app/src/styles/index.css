@@ -18,3 +18,40 @@ font-family: system-ui, sans-serif;
 .logo {
   height: 50px;
 }
+/* Variables de color de DiverKids */
+:root {
+  --primary: #f7c948;   /* amarillo */
+  --secondary: #4a90e2; /* azul */
+  --danger: #e74c3c;    /* rojo */
+}
+
+/* Botones */
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-warning {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+}
+
+.btn-danger {
+  background-color: var(--danger);
+  border-color: var(--danger);
+}
+
+/* Cards */
+.card {
+  border-radius: 12px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* Titulos y espaciado */
+h1, h2, h3, h4 {
+  color: var(--secondary);
+}
+
+.container {
+  margin-top: 2rem;
+}
