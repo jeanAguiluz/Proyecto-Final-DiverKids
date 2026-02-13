@@ -8,6 +8,7 @@ Flask-Bcrypt==1.0.1
 
 # Base de datos
 SQLAlchemy==2.0.23
+psycopg2-binary==2.9.9
 
 # Seguridad
 bcrypt==4.1.2
