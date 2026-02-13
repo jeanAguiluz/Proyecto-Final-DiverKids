@@ -56,7 +56,7 @@ export default function Footer() {
                 <div className="footer-wave"></div>
                 <div className="footer-content">
                     <div className="footer-logo">
-                        <img src="/src/imgs/logocirculo1.svg" alt="DiverKids Logo" />
+                        <img src="/imgs/logocirculo1.svg" alt="DiverKids Logo" />
                     </div>
                     <p className="footer-description">
                         Únete a nuestra comunidad y descubre la magia de DiverKids Eventos.<br />
