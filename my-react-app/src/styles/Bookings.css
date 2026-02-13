@@ -1,0 +1,111 @@
+.bookings-page {
+  min-height: 100vh;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  padding: 30px 0 50px 0;
+  font-weight: lighter;
+}
+
+.bookings-page * {
+  font-weight: lighter;
+}
+
+.bookings-page h1 {
+  /*font-family: 'KG Happy Shadows', sans-serif;*/
+  color: white;
+  text-shadow: 2px 2px 4px rgba(0,0,0,0.2);
+}
+
+.booking-form-card {
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  border: none;
+  border-radius: 15px;
+}
+
+.booking-form-card h3 {
+  font-family: 'KG Happy', sans-serif;
+  color: #667eea;
+  margin-bottom: 20px;
+}
+
+.total-price {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.total-price h4 {
+  margin: 0;
+  font-size: 2rem;
+  font-family: var(--bs-body-font-family), Arial, sans-serif;
+  font-weight: lighter !important;
+  text-shadow: none !important;
+  -webkit-text-stroke: 0 !important;
+  -webkit-text-fill-color: initial !important;
+  letter-spacing: 0;
+}
+
+.bookings-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 25px;
+  margin-top: 30px;
+}
+
+.booking-card {
+  background: white;
+  border-radius: 15px;
+  padding: 25px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: 
+    transform 0.3s ease, 
+    box-shadow 0.3s ease;
+}
+
+.booking-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.booking-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  padding-bottom: 15px;
+  border-bottom: 2px solid #f0f0f0;
+}
+
+.booking-header h4 {
+  font-family: 'KG Happy', sans-serif;
+  color: #333;
+  margin: 0;
+}
+
+.booking-details p {
+  margin: 10px 0;
+  color: #666;
+}
+
+.booking-details .total {
+  font-size: 1.3rem;
+  color: #667eea;
+  font-weight: bold;
+  margin-top: 15px;
+  padding-top: 15px;
+  border-top: 2px solid #f0f0f0;
+}
+
+.booking-actions {
+  margin-top: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+@media (max-width: 768px) {
+  .bookings-grid {
+    grid-template-columns: 1fr;
+  }
+}

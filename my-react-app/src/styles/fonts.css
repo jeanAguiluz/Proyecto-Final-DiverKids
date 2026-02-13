@@ -1,0 +1,21 @@
+/* Fuente KG Happy para DiverKids */
+@font-face {
+  font-family: 'KG Happy';
+  src: url('/fonts/KGHAPPY.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KG Happy Shadows';
+  src: url('/fonts/KGHAPPYShadows.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'KG Happy Solid';
+  src: url('/fonts/KGHAPPYSolid.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}

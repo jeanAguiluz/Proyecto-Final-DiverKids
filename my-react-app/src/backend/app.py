@@ -1,102 +1,123 @@
 import os
-from flask import Flask, request, jsonify
-from flask_jwt_extended import JWTManager, create_access_token
-from werkzeug.security import generate_password_hash, check_password_hash
-from flask_sqlalchemy import SQLAlchemy
+from dotenv import load_dotenv
+from flask import Flask, jsonify
 from flask_cors import CORS
-from flask_migrate import Migrate # Para las migraciones
-from flask import Blueprint
-
-# Configuración del backend
-app = Flask(__name__)
-
-# Apuntar a la carpeta 'instance' para la base de datos
-app.instance_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance')
-os.makedirs(app.instance_path, exist_ok=True)
-app.config['DEBUG'] = True  # Habilitar modo debug
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///' + app.instance_path + '/database.db'  # Ruta correcta para la base de datos en 'instance'
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False  # Evitar el aviso de modificaciones
-app.config['SECRET_KEY'] = 'your-secret-key'
-app.config['JWT_SECRET_KEY'] = 'your-jwt-secret-key'
+from flask_migrate import Migrate
+from flask_jwt_extended import JWTManager
+from models import db, bcrypt
 
 
-db = SQLAlchemy(app)
-jwt = JWTManager(app)
-migrate = Migrate(app, db)
+def normalize_database_url(database_url: str) -> str:
+    """Normaliza DATABASE_URL para SQLAlchemy en proveedores como Render."""
+    if database_url and database_url.startswith("postgres://"):
+        return database_url.replace("postgres://", "postgresql://", 1)
+    return database_url
 
-# Habilitar CORS para permitir solicitudes desde el frontend en React
-CORS(app, origins=["http://localhost:5173"])
 
-api = Blueprint("api", __name__)
+def create_app():
+    """Factory function para crear la aplicación Flask"""
 
-# Modelo de Usuario
-class User(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    email = db.Column(db.String(120), unique=True, nullable=False)
-    password = db.Column(db.String(200), nullable=False)
-    is_admin = db.Column(db.Boolean, default=False)  # Agregar is_admin al modelo
+    # Cargar variables de entorno PRIMERO
+    load_dotenv()
 
-    def set_password(self, password):
-        self.password = generate_password_hash(password)
+    app = Flask(__name__)
 
-    def check_password(self, password):
-        return check_password_hash(self.password, password)
-    
-# Ruta para login
-@api.route('/api/login', methods=['POST'])
-def login():
-    try:
-        email = request.json.get('email', None)
-        password = request.json.get('password', None)
+    # Directorio de instancia para la base de datos
+    app.instance_path = os.path.join(os.path.abspath(os.path.dirname(__file__)), 'instance')
+    os.makedirs(app.instance_path, exist_ok=True)
 
-        if not email or not password:
-            return jsonify({"msg": "Correo y contraseña requeridos"}), 400
+    # Configuraciones básicas
+    app.config['DEBUG'] = os.getenv('FLASK_DEBUG', 'false').lower() == 'true'
+    app.config['SECRET_KEY'] = os.getenv('SECRET_KEY', 'dev-secret-key-change-in-production')
+    app.config['FRONTEND_URL'] = os.getenv('FRONTEND_URL', 'http://localhost:5173')
 
-        user = User.query.filter_by(email=email).first()
+    # Base de datos
+    database_url = normalize_database_url(
+        os.getenv('DATABASE_URL', 'sqlite:///' + os.path.join(app.instance_path, 'database.db'))
+    )
+    app.config['SQLALCHEMY_DATABASE_URI'] = database_url
+    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
-        if not user or not check_password_hash(user.password, password):
-            return jsonify({"msg": "Correo o contraseña incorrectos"}), 401
+    # Configuración JWT
+    app.config['JWT_SECRET_KEY'] = os.getenv('JWT_SECRET_KEY', 'jwt-secret-key-change-in-production')
+    app.config['JWT_ACCESS_TOKEN_EXPIRES'] = 86400  # 24 horas
+    app.config['JWT_TOKEN_LOCATION'] = ['headers']
+    app.config['JWT_HEADER_NAME'] = 'Authorization'
+    app.config['JWT_HEADER_TYPE'] = 'Bearer'
 
-        # Verificar si el usuario es un administrador
-        if not user.is_admin:
-            return jsonify({"msg": "Acceso denegado. Solo administradores pueden acceder."}), 403
+    # Inicializar extensiones
+    db.init_app(app)
+    bcrypt.init_app(app)
+    Migrate(app, db)
+    jwt = JWTManager(app)
 
-        # Crear un token JWT para el usuario autenticado
-        access_token = create_access_token(identity=user.id)
+    # Handlers de errores JWT
+    @jwt.invalid_token_loader
+    def invalid_token_callback(error):
+        print(f"❌ Token inválido: {error}")
+        return jsonify({'msg': 'Token inválido', 'error': str(error)}), 422
 
-        return jsonify({
-            'user': {'email': user.email, 'id': user.id},
-            'token': access_token
-        }), 200
+    @jwt.unauthorized_loader
+    def unauthorized_callback(error):
+        print(f"❌ Sin autorización: {error}")
+        return jsonify({'msg': 'Falta token de autorización', 'error': str(error)}), 401
 
-    except Exception as e:
-        return jsonify({"msg": "Error interno del servidor", "error": str(e)}), 500
-    
-    
-# Ruta para registro de usuario
-@api.route('/api/signup', methods=['POST'])
-def signup():
-    body = request.get_json()
-    if not body or not body.get("email") or not body.get("password"):
-        return jsonify({"msg": "Email y password requeridos"}), 400
+    @jwt.expired_token_loader
+    def expired_token_callback(jwt_header, jwt_payload):
+        print("❌ Token expirado")
+        return jsonify({'msg': 'Token expirado'}), 401
 
-    if User.query.filter_by(email=body["email"]).first():
-        return jsonify({"msg": "Usuario ya existe"}), 409
+    # CORS - permite las solicitudes del front
+    cors_origins = os.getenv(
+        'CORS_ORIGINS',
+        'http://localhost:5173,http://localhost:3000'
+    ).split(',')
+    cors_origins = [origin.strip() for origin in cors_origins if origin.strip()]
+    CORS(app, origins=cors_origins, supports_credentials=True)
 
-    user = User(email=body["email"])
-    user.set_password(body["password"])  # Cifra la contraseña
-    user.is_admin = body.get("role", "parent") == "admin"  # Asigna el rol 'admin' si el cuerpo lo contiene
+    # Registro de blueprints
+    from routes import api
+    app.register_blueprint(api, url_prefix='/api')
 
-    db.session.add(user)
-    db.session.commit()
+    # Ruta raíz home
+    @app.route('/')
+    def home():
+        return {
+            "message": "Bienvenido a la API de DiverKids",
+            "version": "1.0",
+            "endpoints": {
+                "auth": "/api/signup, /api/login, /api/profile",
+                "events": "/api/events",
+                "contacts": "/api/contact, /api/contacts",
+                "costumes": "/api/costumes",
+                "packages": "/api/packages",
+                "bookings": "/api/bookings"
+            }
+        }, 200
 
-    return jsonify({"msg": "Usuario creado exitosamente"}), 201
+    # Manejo de errores
+    @app.errorhandler(404)
+    def not_found(error):
+        return {"msg": "Recurso no encontrado"}, 404
 
-from routes import api  # Asegúrate de importar el blueprint de rutas
-app.register_blueprint(api) # Registrar el blueprint de rutas en la aplicación Flask 
+    @app.errorhandler(500)
+    def internal_error(error):
+        return {"msg": "Error interno del servidor"}, 500
 
-# Ejecutar la aplicación Flask
+    # Crear tablas
+    with app.app_context():
+        db.create_all()
+        print("✅ Base de datos inicializada")
+
+    return app
+
+
+# Ejecutar la aplicación local
 if __name__ == '__main__':
-    with app.app_context():  # Crear el contexto de la aplicación
-        db.create_all()  # Crea las tablas en la base de datos
-    app.run(debug=True)
+    app = create_app()
+    app.run(
+        host='0.0.0.0',
+        port=int(os.getenv('PORT', 5001)),
+        debug=app.config['DEBUG'],
+        use_reloader=False
+    )

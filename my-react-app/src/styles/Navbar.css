@@ -1,62 +1,117 @@
 .navbar {
     display: flex;
     justify-content: space-between;
-    align-items: center;
-    padding: 10px 30px;
-    min-height: 180px;
-    /* altura desktop */
+    align-items: flex-start;
+    padding: 12px 30px 42px;
+    min-height: 220px;
     position: relative;
+    overflow: hidden;
     color: white;
+    background-image: url(../imgs/NavBar-oscuro.svg);
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
 }
 
-/* Overlay para legibilidad */
 .navbar::before {
     content: "";
     position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background: rgba(0, 0, 0, 0.4);
+    inset: 0;
+    background: linear-gradient(
+        180deg,
+        rgba(118, 30, 165, 0.45) 0%,
+        rgba(92, 23, 144, 0.7) 100%
+    );
     z-index: 0;
+}
+
+.navbar::after {
+    content: none;
+}
+
+.navbar-wave {
+    position: absolute;
+    left: 0;
+    width: 100%;
+    bottom: 0;
+    height: 140px;
+    z-index: 1;
+    pointer-events: none;
+    display: block;
+    transform: translateY(1px);
+}
+
+.navbar-wave path {
+    fill: #ffffff;
+    stroke: #ffffff;
+    stroke-width: 2;
 }
 
 .navbar-left,
 .navbar-right {
     display: flex;
     align-items: center;
-    z-index: 1;
+    z-index: 2;
+}
+
+.navbar-right {
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    row-gap: 8px;
+    max-width: calc(100% - 220px);
+    margin-top: 16px;
 }
 
 .logo {
-    height: 100px !important;
+    height: 150px !important;
     width: auto !important;
 }
 
 /* Links y botones */
 .navbar-right a,
-.btn-logout {
+.btn-logout,
+.btn-login {
     color: white;
     margin-left: 20px;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: lighter;
     transition: color 0.3s;
 }
 
 .navbar-right a:hover,
-.btn-logout:hover {
-    color: #FFD700;
+.btn-logout:hover,
+.btn-login:hover {
+    color: aqua;
 }
 
-.btn-logout {
-    background: none;
-    border: 1px solid white;
-    padding: 5px 10px;
-    border-radius: 5px;
+.btn-logout,
+.btn-login {
+    border: 2px solid transparent;
+    background:
+        linear-gradient(transparent, transparent) padding-box,
+        linear-gradient(90deg, #ffd84d, #ff7ad9, #7c5cff, #3de2ff) border-box;
+    color: black;
+    padding: 8px 18px;
+    border-radius: 10px;
     cursor: pointer;
+}
+
+.btn-logout:hover {
+    color: #0dc0cc;
+    filter: brightness(1.03);
+}
+
+.btn-login:hover {
+    color: #0dc0cc;
+    filter: brightness(1.03);
+}
+
+.navbar-right a.btn-login {
+    color: black;
+}
+
+.navbar-right a.btn-login:hover {
+    color: aqua;
 }
 
 /* Botón hamburguesa */
@@ -67,33 +122,46 @@
     border: none;
     color: white;
     cursor: pointer;
+    z-index: 2;
 }
 
 /* Responsive */
 @media (max-width: 768px) {
     .hamburger {
         display: block;
+        z-index: 1300;
     }
 
     .navbar-right {
-        position: absolute;
-        top: 100%;
+        position: fixed;
+        top: 0;
         right: 0;
-        background: rgba(0, 0, 0, 0.9);
+
+        height: 100vh;
+        width: 280px;
+
+        background: #481694;
         flex-direction: column;
-        width: 200px;
-        max-height: 0;
-        overflow: hidden;
-        transition: max-height 0.3s ease;
+        flex-wrap: nowrap;
+        padding: 2rem 1.5rem;
+        margin-top: 0;
+        max-width: none;
+        row-gap: 0;
+
+        transform: translateX(100%);
+        transition: transform 0.35s ease-in-out;
+
+        z-index: 1200;
     }
 
     .navbar-right.open {
-        max-height: 500px;
+        transform: translateX(0);
     }
 
     .navbar-right a,
-    .btn-logout {
-        margin: 10px;
+    .btn-logout,
+    .btn-login {
+        margin: 15px 0;
     }
 
     .logo {
@@ -101,6 +169,23 @@
     }
 
     .navbar {
-        min-height: 120px;
+        min-height: 140px;
+    }
+
+    .navbar-wave {
+        height: 92px;
+    }
+
+    a.itemNavbar {
+        border-bottom: 1px solid #764ba2;
+        width: 100%;
+        padding: 10px 0;
+    }
+
+    .overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        z-index: 1100;
     }
 }

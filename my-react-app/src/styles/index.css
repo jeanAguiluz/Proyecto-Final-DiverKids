@@ -1,57 +1,124 @@
-* {
-margin: 0;
-padding: 0;
-box-sizing: border-box;
+@import './fonts.css';
+
+:root {
+    --detail-bg: #ffffff;
+    --detail-card-bg: #fff;
+    --detail-card-radius: 18px;
+    --detail-card-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    --detail-image-bg: #eef2ff;
+    --detail-image-min-h: 420px;
+    --detail-image-min-h-mobile: 250px;
+    --detail-info-padding: 28px;
+    --detail-info-padding-mobile: 20px;
+    --detail-title-color: #1f1f1f;
+    --detail-text-color: #222;
+    --detail-price-color: #4b22a1;
+    --detail-price-size: 1.4rem;
 }
 
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
 
 body {
-font-family: system-ui, sans-serif;
+    background-color: white;
+    color: #1f1f1f;
+    font-family: 'KG Happy', sans-serif;
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
 }
-.navbar {
-  height: 70px;
-  display: flex;
-  align-items: center;
-  padding: 0 20px;
+
+img,
+svg,
+video,
+canvas {
+    max-width: 100%;
+    height: auto;
+}
+
+h1, h2 {
+    font-family: 'KG Happy Solid', 'KG Happy', sans-serif;
+}
+
+h3,
+h4,
+h5,
+h6 {
+    font-family: 'KG Happy', sans-serif;
 }
 
 .logo {
-  height: 50px;
-}
-/* Variables de color de DiverKids */
-:root {
-  --primary: #f7c948;   /* amarillo */
-  --secondary: #4a90e2; /* azul */
-  --danger: #e74c3c;    /* rojo */
+    font-family: 'KG Happy Solid', sans-serif;
 }
 
-/* Botones */
-.btn-primary {
-  background-color: var(--primary);
-  border-color: var(--primary);
+@media (max-width: 1200px) {
+    .container,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl,
+    .container-xxl {
+        padding-left: 1rem;
+        padding-right: 1rem;
+    }
 }
 
-.btn-warning {
-  background-color: var(--secondary);
-  border-color: var(--secondary);
+@media (max-width: 992px) {
+    h1 {
+        font-size: clamp(1.8rem, 5vw, 2.4rem);
+    }
+
+    h2 {
+        font-size: clamp(1.5rem, 4.5vw, 2rem);
+    }
 }
 
-.btn-danger {
-  background-color: var(--danger);
-  border-color: var(--danger);
+@media (max-width: 768px) {
+    body {
+        font-size: 15px;
+    }
+
+    .container,
+    .container-fluid,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl,
+    .container-xxl {
+        padding-left: 0.9rem;
+        padding-right: 0.9rem;
+    }
+
+    .btn {
+        font-size: 0.95rem;
+    }
+
+    .table-responsive {
+        font-size: 0.92rem;
+    }
 }
 
-/* Cards */
-.card {
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-}
+@media (max-width: 576px) {
+    .container,
+    .container-fluid,
+    .container-lg,
+    .container-md,
+    .container-sm,
+    .container-xl,
+    .container-xxl {
+        padding-left: 0.75rem;
+        padding-right: 0.75rem;
+    }
 
-/* Titulos y espaciado */
-h1, h2, h3, h4 {
-  color: var(--secondary);
-}
+    h1 {
+        line-height: 1.2;
+    }
 
-.container {
-  margin-top: 2rem;
+    h2,
+    h3 {
+        line-height: 1.25;
+    }
 }

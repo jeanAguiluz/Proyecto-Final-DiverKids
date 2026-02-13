@@ -1,0 +1,20 @@
+# OS / Editor
+.vscode/
+.idea/
+.DS_Store
+
+# Python
+venv/
+**/__pycache__/
+*.py[cod]
+
+# Local runtime data
+instance/
+my-react-app/src/backend/instance/
+
+# Local secrets
+my-react-app/src/backend/.env
+my-react-app/src/backend/credentials.json
+my-react-app/src/backend/credential.json
+my-react-app/src/backend/credential.json.json
+my-react-app/src/backend/token.json

@@ -1,65 +1,98 @@
-import { useState, useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
-import axiosInstance from '../axiosConfig';  // Asegúrate de que Axios esté configurado correctamente
+import React, { useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import { useAuth } from '../context/useAuth';
+import '../styles/Auth.css';
 
-export default function Login() {
-    const { login } = useContext(AuthContext);  // Accede a la función login del contexto
-    const [email, setEmail] = useState("");  // Estado para el email
-    const [password, setPassword] = useState("");  // Estado para la contraseña
-    const [errorMessage, setErrorMessage] = useState("");  // Estado para manejar errores
+function Login() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
 
-    const handleSubmit = async (e) => {
-        e.preventDefault();  // Prevenir el comportamiento predeterminado del formulario
+  const { login } = useAuth();
+  const navigate = useNavigate();
 
-        try {
-            // Enviar la solicitud POST usando Axios al backend
-            const res = await axiosInstance.post("http://127.0.0.1:5000/api/login", { email, password });
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setLoading(true);
 
-            if (res.status === 200) {
-                // Almacenar el token en el almacenamiento local
-                localStorage.setItem("token", res.data.token);
+    const result = await login(email, password);
 
-                // Llamar a la función login del contexto para actualizar el estado global
-                login(res.data.user, res.data.token);
+    if (result.success) {
+      navigate('/'); // Redirigir al home
+    } else {
+      setError(result.message);
+    }
 
-                // Redirigir a la página protegida (por ejemplo, perfil)
-                window.location.href = "/profile";
+    setLoading(false);
+  };
 
-                alert("Login exitoso!");
-            }
-        } catch (err) {
-            // Manejar errores (por ejemplo, usuario no encontrado, etc.)
-            if (err.response && err.response.data) {
-                setErrorMessage(err.response.data.msg);  // Mostrar mensaje de error
-            } else {
-                setErrorMessage("Hubo un error al intentar iniciar sesión");
-            }
-        }
-    };
+  return (
+    <div className="auth-page">
+    <div className="container mt-5">
+      <div className="row justify-content-center">
+        <div className="col-md-6">
+          <div className="card auth-card">
+            <div className="card-body">
+              <div className="login-title-card mb-4">
+                <h2 className="text-center mb-0 login-rainbow-title">Iniciar Sesión</h2>
+              </div>
 
-    return (
-        <div className="container mt-4">
-            <h2>Login</h2>
-            {errorMessage && <div className="alert alert-danger">{errorMessage}</div>} {/* Mostrar mensaje de error */}
-            <form onSubmit={handleSubmit} className="w-50 mx-auto">
-                <input
-                    className="form-control mb-2"
+              {error && (
+                <div className="alert alert-danger" role="alert">
+                  {error}
+                </div>
+              )}
+
+              <form onSubmit={handleSubmit}>
+                <div className="mb-3">
+                  <label className="form-label">Email</label>
+                  <input
                     type="email"
-                    placeholder="Email"
+                    className="form-control"
                     value={email}
-                    onChange={(e) => setEmail(e.target.value)}  // Actualizar el estado del email
-                />
-                <input
-                    className="form-control mb-2"
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <div className="mb-3">
+                  <label className="form-label">Contraseña</label>
+                  <input
                     type="password"
-                    placeholder="Contraseña"
+                    className="form-control"
                     value={password}
-                    onChange={(e) => setPassword(e.target.value)}  // Actualizar el estado de la contraseña
-                />
-                <button className="btn btn-primary w-100" type="submit">
-                    Login
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  className="btn btn-primary w-100"
+                  disabled={loading}
+                >
+                  {loading ? 'Cargando...' : 'Iniciar Sesión'}
                 </button>
-            </form>
+              </form>
+
+              <div className="mt-3 d-grid gap-2">
+                <Link to="/register" className="btn btn-primary auth-mini-btn">
+                  📝 Regístrate aquí
+                </Link>
+                <Link to="/forgot-password" className="btn btn-primary auth-mini-btn">
+                  🔐 ¿Olvidaste tu contraseña?
+                </Link>
+              </div>
+
+            </div>
+          </div>
         </div>
-    );
+      </div>
+    </div>
+</div>
+  );
 }
+
+export default Login;

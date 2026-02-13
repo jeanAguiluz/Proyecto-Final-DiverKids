@@ -1,15 +1,31 @@
+import React from 'react';
 import { Navigate } from 'react-router-dom';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 
-const AdminRoute = ({ children }) => {
-    const { user, token } = useAuth();  // Accede al estado del usuario desde el contexto de autenticación
+function PrivateRoute({ children, requireAdmin = false }) {
+    const { user, loading } = useAuth();
 
-    if (!user || !token || !user.is_admin) {
-        // Si el usuario no está autenticado o no es administrador, redirige al login
+    if (loading) {
+        return (
+            <div className="text-center mt-5">
+                <div className="spinner-border" role="status">
+                    <span className="visually-hidden">Cargando...</span>
+                </div>
+            </div>
+        );
+    }
+
+    // No está autenticado
+    if (!user) {
         return <Navigate to="/login" />;
     }
 
-    return children;  // Si el usuario es un administrador, renderiza el contenido protegido
-};
+    // Requiere admin pero no lo es
+    if (requireAdmin && user.role !== 'admin') {
+        return <Navigate to="/" />;
+    }
 
-export default AdminRoute;
+    return children;
+}
+
+export default PrivateRoute;

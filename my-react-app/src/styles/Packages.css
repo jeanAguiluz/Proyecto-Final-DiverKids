@@ -1,0 +1,253 @@
+.packages-page {
+  min-height: 100vh;
+  background: white;
+  padding-bottom: 50px;
+}
+
+.packages-header {
+  background: white;
+  padding: 40px 20px;
+  text-align: center;
+  box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+}
+
+.packages-header h1 {
+  font-family: 'KG Happy Solid', 'KG Happy', sans-serif;
+  font-size: clamp(2rem, 5vw, 3rem);
+  color: #667eea;
+  margin-bottom: 10px;
+  white-space: normal;
+  overflow-wrap: break-word;
+  word-break: normal;
+}
+
+.packages-header h1 .fixed-emoji {
+  color: #ffb703;
+  background: none;
+  -webkit-background-clip: initial;
+  background-clip: initial;
+  -webkit-text-fill-color: #ffb703;
+  animation: none;
+}
+
+.packages-header p {
+  font-size: 1.2rem;
+  color: #666;
+}
+
+.filters-section {
+  background: peachpuff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+}
+
+.packages-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 30px;
+  margin-top: 30px;
+}
+
+.package-card {
+  background: white;
+  border-radius: 15px;
+  overflow: hidden;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.package-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+}
+
+.package-image {
+  position: relative;
+  height: 350px;
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.package-image-link {
+  display: block;
+  text-decoration: none;
+}
+
+.package-image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.placeholder-image {
+  font-size: 80px;
+}
+
+.package-body {
+  padding: 20px;
+}
+
+
+.package-header-info .badge {
+  font-family: 'KG Happy', sans-serif;
+  font-weight: 300;
+  font-size: 1rem;
+}
+
+.package-title {
+  font-family: 'KG Happy', sans-serif;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.package-title-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.package-title-link:hover {
+  color: #1f1f1f;
+  text-decoration: underline;
+}
+
+.package-description {
+  color: black;
+  font-size: 0.95rem;
+  margin-bottom: 15px;
+}
+
+.package-includes {
+  color: #333;
+  padding: 10px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+  font-size: 0.9rem;
+}
+
+.package-includes strong {
+  color: #333;
+  font-weight: normal;
+}
+
+.package-includes ul {
+  margin: 8px 0 0 18px;
+  padding: 0;
+}
+
+.package-includes li {
+  margin-bottom: 4px;
+}
+
+.package-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 15px;
+  padding-right: 0;
+  border-top: 2px solid blueviolet;
+  gap: 10px;
+  overflow: visible;
+}
+
+.package-footer-actions {
+  display: flex;
+  gap: 8px;
+  flex-wrap: nowrap;
+  align-items: center;
+  justify-content: flex-end;
+  margin-left: auto;
+  margin-right: 0;
+  min-width: 0;
+}
+
+.package-price {
+  font-size: 1.8rem;
+  font-weight: normal;
+  color: #667eea;
+  line-height: 1;
+  flex: 0 0 auto;
+}
+
+.package-footer .btn {
+  padding: 9px 12px;
+}
+
+.package-footer-actions .btn {
+  white-space: nowrap;
+}
+
+.package-footer-actions .btn-outline-dark {
+  padding: 7px 12px;
+  font-size: 0.9rem;
+}
+
+.package-footer-actions .btn-primary,
+.package-footer-actions .btn-secondary {
+  padding: 9px 12px;
+  font-size: 0.95rem;
+}
+
+@media (max-width: 1200px) {
+  .package-price {
+    font-size: 1.55rem;
+  }
+
+  .package-footer-actions .btn-outline-dark {
+    padding: 6px 10px;
+    font-size: 0.84rem;
+  }
+
+  .package-footer-actions .btn-primary,
+  .package-footer-actions .btn-secondary {
+    padding: 8px 10px;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 768px) {
+  .packages-grid {
+    grid-template-columns: 1fr;
+  }
+  
+  .packages-header h1 {
+    font-size: 2rem;
+  }
+
+  .package-image {
+    height: 230px;
+  }
+
+  .package-footer {
+    align-items: center;
+    flex-direction: row;
+  }
+
+  .package-footer-actions {
+    margin-left: auto;
+    margin-right: 0;
+  }
+
+  .package-price {
+    font-size: 1.35rem;
+  }
+}
+
+@media (max-width: 420px) {
+  .package-footer {
+    gap: 8px;
+  }
+
+  .package-footer-actions {
+    width: 100%;
+    justify-content: space-between;
+  }
+
+  .package-footer-actions .btn {
+    flex: 1 1 auto;
+    text-align: center;
+  }
+}

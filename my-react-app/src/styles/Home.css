@@ -1,0 +1,210 @@
+.home-page {
+    min-height: 100vh;
+    background: #ffffff;
+    padding: 50px 0;
+}
+
+.hero-section {
+    background: white;
+    padding: 40px;
+    border-radius: 20px;
+    margin-bottom: 40px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.12);
+}
+
+.hero-title{
+    font-family: 'KG Happy Solid', 'KG Happy', sans-serif;
+    font-size: 1.5rem;
+    color: transparent;
+    background: linear-gradient(
+        90deg,
+        #ff0000,
+        #ff7f00,
+        #ffff00,
+        #00ff00,
+        #0000ff,
+        #4b0082,
+        #8b00ff
+    );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: rainbow-shift 6s linear infinite;
+    margin-bottom: 20px;
+    white-space: normal;
+    overflow-wrap: break-word;
+    word-break: normal;
+}
+
+.home-page .font-size\=3rem {
+    font-size: 3rem;
+}
+
+@keyframes rainbow-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+.hero-subtitle {
+    font-size: 1.3rem;
+    color: #666;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+/* Carrusel con React Bootstrap */
+.custom-carousel {
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    margin-bottom: 40px;
+}
+
+.carousel-image {
+    height: 700px;
+    object-fit: cover;
+}
+
+.custom-carousel .carousel-control-prev-icon,
+.custom-carousel .carousel-control-next-icon {
+    background-color: rgba(102, 126, 234, 0.8);
+    border-radius: 50%;
+    padding: 20px;
+}
+
+.custom-carousel .carousel-indicators button {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: #667eea;
+}
+
+.et_pb_button_alignment_center {
+    display: flex;
+    justify-content: center;
+    margin: 20px 0 40px;
+}
+
+.instagram-btn {
+    display: inline-block;
+    padding: 12px 28px;
+    border-radius: 999px;
+    text-decoration: none;
+    font-family: 'KG Happy', sans-serif;
+    font-size: 1.05rem;
+    color: #fff;
+    background: linear-gradient(90deg, #f58529, #dd2a7b, #8134af);
+    box-shadow: 0 10px 22px rgba(129, 52, 175, 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease;
+}
+
+.instagram-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 14px 28px rgba(129, 52, 175, 0.45);
+    filter: brightness(1.05);
+    color: #fff;
+}
+
+.instagram-btn:active {
+    transform: translateY(0);
+}
+
+/* Tarjetas de servicios */
+.service-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 28px rgba(0, 0, 0, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 16px 44px rgba(0, 0, 0, 0.38);
+}
+
+.card-image-wrapper {
+    aspect-ratio: 4 / 3;
+    height: auto;
+    overflow: hidden;
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.card-image-wrapper img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.3s ease;
+}
+
+.service-card:hover .card-image-wrapper img {
+    transform: scale(1.1);
+}
+
+.service-card .card-body {
+    padding: 30px;
+    background: white;
+}
+
+.service-card .card-title {
+    font-family: 'KG Happy', sans-serif;
+    color: #667eea;
+    font-size: 1.8rem;
+    margin-bottom: 15px;
+}
+
+.service-card .card-text {
+    color: black;
+    font-size: 1.1rem;
+    font-weight: normal;
+    margin-bottom: 20px;
+    text-shadow: none !important;
+}
+
+.service-card .btn {
+    font-weight: normal;
+    padding: 12px;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    transition: all 0.25s ease;
+    color: #000 !important;
+    text-shadow: 1px 1px 0 #fff;
+}
+
+.home-page .btn.btn-warning.btn-lg.w-100 {
+    text-shadow: 1px 1px 0 #ffffff;
+}
+
+.home-page .service-card .btn.btn-primary.btn-lg.w-100 {
+    text-shadow: 0 0 2px #fff, 0 0 4px #fff, 1px 1px 0 #fff;
+}
+
+.home-page .service-card .btn.btn-lg.w-100:hover {
+    background: #ffffff !important;
+    color: #000 !important;
+    text-shadow: 1px 1px 0 #fff;
+    border-color: #5322a6 !important;
+    box-shadow: none;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+    .hero-title {
+        font-size: 2rem;
+    }
+
+    .carousel-image {
+        height: 300px;
+    }
+
+    .card-image-wrapper {
+        aspect-ratio: 16 / 11;
+    }
+}

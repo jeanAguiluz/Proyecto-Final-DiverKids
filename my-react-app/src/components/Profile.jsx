@@ -1,8 +1,7 @@
-import { useContext } from "react";
-import { AuthContext } from "../context/AuthContext";
+import { useAuth } from "../context/useAuth";
 
 export default function Profile() {
-    const { user } = useContext(AuthContext);
+    const { user } = useAuth();
 
     if (!user) return <p>Acceso denegado</p>;
 

@@ -1,0 +1,149 @@
+.contact-page {
+    padding: 24px 0 56px;
+}
+
+.about-page-bg {
+    background: #ffffff;
+    padding: 24px 0 56px;
+}
+
+.contact-page .hero-section {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 28px 20px;
+    margin-bottom: 24px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+}
+
+.containerForm {
+    text-align: center;
+    border: 1px solid #adb5bd;
+    border-radius: 10px;
+    padding: 20px 40px;
+    width: min(100%, 760px) !important;
+}
+
+.btnSubmit,
+.btn-primary {
+    background: #481694;
+    border: 2px solid;
+    padding: 5px 35px;
+    font-size: 18px;
+}
+
+.btnSubmit:hover,
+.btn-primary:hover {
+    border: 2px solid #481694;
+    color: #481694;
+    background: #ffffff;
+}
+
+.titlePage {
+    text-align: center;
+}
+
+.contact-page .hero-title {
+    margin: 0;
+    font-family: 'KG Happy Solid', 'KG Happy', sans-serif;
+    color: transparent;
+    background: linear-gradient(
+        90deg,
+        #ff0000,
+        #ff7f00,
+        #ffff00,
+        #00ff00,
+        #0000ff,
+        #4b0082,
+        #8b00ff
+    );
+    background-size: 300% 100%;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    animation: contact-rainbow-shift 6s linear infinite;
+    white-space: normal;
+}
+
+.contact-page .contact-title-icon {
+    color: #0f7fa6;
+    -webkit-text-fill-color: #0f7fa6;
+    background: none;
+    -webkit-background-clip: initial;
+    background-clip: initial;
+}
+
+.contact-page .font-size\=3\.0rem {
+    font-size: 3rem;
+}
+
+.about-page .font-size\=3\.0rem {
+    font-size: 3rem;
+}
+
+.about-page .hero-section {
+    background: #ffffff;
+    border-radius: 20px;
+    padding: 28px 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.about-page .hero-section .hero-title {
+    margin: 0;
+    text-align: center;
+    width: 100%;
+}
+
+.about-page .about-team-row {
+    margin-top: 22px !important;
+    margin-bottom: 10px;
+    padding-bottom: 28px;
+}
+
+.about-page .about-subtitle {
+    margin: 8px 0 0;
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.about-page .about-value-card {
+    border: 1px solid #e6e6e6;
+    border-radius: 14px;
+    box-shadow: 0 8px 18px rgba(0, 0, 0, 0.08) !important;
+}
+
+.about-page .about-mision {
+    background: #e2d3ff;
+}
+
+.about-page .about-vision {
+    background: #c9f0dc;
+}
+
+.about-page .about-valores {
+    background: #ffefb5;
+}
+
+@keyframes contact-rainbow-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+
+@media (max-width: 768px) {
+    .contact-page .hero-section {
+        padding: 20px 16px;
+        border-radius: 14px;
+    }
+
+    .containerForm {
+        width: 100% !important;
+        padding: 16px;
+    }
+}
