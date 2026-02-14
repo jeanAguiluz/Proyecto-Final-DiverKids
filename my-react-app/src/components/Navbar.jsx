@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 import logo from "../imgs/logocirculo1.svg";
 import "bootstrap/dist/css/bootstrap.min.css";
@@ -8,8 +8,14 @@ import "../styles/Navbar.css";
 export default function Navbar() {
     const { user, logout } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
+    const location = useLocation();
 
     const toggleMenu = () => setIsOpen(!isOpen);
+    const closeMenu = () => setIsOpen(false);
+
+    useEffect(() => {
+        closeMenu();
+    }, [location.pathname]);
 
     return (
         <nav className="navbar">
@@ -25,32 +31,33 @@ export default function Navbar() {
             </button>
 
             <div className={`navbar-right ${isOpen ? "open" : ""}`}>
-                <Link to="/">Inicio</Link>
-                <Link to="/packages">Paquetes</Link>
-                <Link to="/events">Eventos</Link>
-                <Link to="/costumes">Disfraces</Link>
-                <Link to="/about">Nosotros</Link>
-                <Link to="/contact">Contacto</Link>
+                <Link to="/" onClick={closeMenu}>Inicio</Link>
+                <Link to="/packages" onClick={closeMenu}>Paquetes</Link>
+                <Link to="/events" onClick={closeMenu}>Eventos</Link>
+                <Link to="/costumes" onClick={closeMenu}>Disfraces</Link>
+                <Link to="/about" onClick={closeMenu}>Nosotros</Link>
+                <Link to="/contact" onClick={closeMenu}>Contacto</Link>
 
                 {/* Mostrar según autenticación */}
                 {user ? (
                     <>
-                        <Link to="/dashboard">Dashboard</Link>
+                        <Link to="/dashboard" onClick={closeMenu}>Dashboard</Link>
                         {user.role === 'admin' && (
                             <>
-                                <Link to="/admin/costumes">Admin Disfraces</Link>
-                                <Link to="/admin/packages">Admin Paquetes</Link>
-                                <Link to="/admin/contacts">Admin Contactos</Link>
+                                <Link to="/admin/costumes" onClick={closeMenu}>Admin Disfraces</Link>
+                                <Link to="/admin/packages" onClick={closeMenu}>Admin Paquetes</Link>
+                                <Link to="/admin/contacts" onClick={closeMenu}>Admin Contactos</Link>
                             </>
                         )}
-                        <button className="btn-logout" onClick={logout}>
+                        <button className="btn-logout" onClick={() => { closeMenu(); logout(); }}>
                             Cerrar Sesión
                         </button>
                     </>
                 ) : (
-                    <Link to="/login" className="btn-login">Iniciar Sesión</Link>
+                    <Link to="/login" className="btn-login" onClick={closeMenu}>Iniciar Sesión</Link>
                 )}
             </div>
+            {isOpen && <div className="overlay" onClick={closeMenu} aria-hidden="true" />}
             <svg
                 className="navbar-wave"
                 viewBox="0 0 1440 220"
