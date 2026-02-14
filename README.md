@@ -2,32 +2,36 @@
 
 ![DiverKids Logo](./my-react-app/src/imgs/logocirculo1.svg)
 
-DiverKids es mi proyecto final del bootcamp. Es una app **full-stack** para gestionar eventos infantiles, disfraces y paquetes de animación.
-
-La idea fue construir una plataforma donde:
-- Los usuarios puedan registrarse, iniciar sesión y reservar servicios.
-- Los administradores puedan gestionar el catálogo y las reservas.
-- Exista contacto directo por formulario y WhatsApp.
+DiverKids es mi proyecto final del bootcamp de desarrollo web en 4Geeks Academy. Es una aplicación **full-stack** para organizar eventos infantiles, gestionar reservas y administrar catálogos de disfraces y paquetes de animación.
 
 ---
 
-## ¿Qué incluye el proyecto?
+## Descripción
 
-### Funciones para usuarios
+La plataforma permite:
+- A usuarios: registrarse, iniciar sesión, crear eventos y reservar servicios.
+- A administradores: gestionar disfraces, paquetes, reservas y mensajes de contacto.
+- Integrar notificaciones por correo y contacto directo por WhatsApp.
+
+---
+
+## Funcionalidades
+
+### Usuario
 - Registro e inicio de sesión.
 - Recuperación y restablecimiento de contraseña.
 - Catálogo de disfraces.
 - Catálogo de paquetes.
-- Creación y gestión de eventos.
-- Creación y gestión de reservas.
-- Dashboard con resumen de información.
+- Crear, editar y eliminar eventos.
+- Crear y gestionar reservas.
+- Dashboard con resumen de actividad.
 - Formulario de contacto.
 
-### Funciones para admin
+### Administrador
 - CRUD de disfraces (`/admin/costumes`).
 - CRUD de paquetes (`/admin/packages`).
 - Gestión de reservas y eventos.
-- Revisión de mensajes de contacto.
+- Revisión y cambio de estado de mensajes de contacto.
 
 ---
 
@@ -47,17 +51,18 @@ La idea fue construir una plataforma donde:
 - Flask-JWT-Extended
 - Flask-Bcrypt
 - Flask-CORS
-- SQLite (desarrollo)
+- SQLite (local)
+- PostgreSQL (producción)
 
 ### Servicios externos
 - SendGrid (emails)
-- WhatsApp link
+- Google Calendar API (sincronización opcional)
+- WhatsApp (enlace directo)
 
 ---
 
-## Estructura general de datos
+## Modelos principales
 
-Modelos principales:
 - `User`
 - `Costume`
 - `AnimationPackage`
@@ -72,8 +77,8 @@ Modelos principales:
 
 ### 1) Clonar repositorio
 ```bash
-git clone https://github.com/tu-usuario/diverkids.git
-cd diverkids
+git clone https://github.com/jeanAguiluz/Proyecto-Final-DiverKids.git
+cd Proyecto-Final-DiverKids
 ```
 
 ### 2) Backend
@@ -84,9 +89,7 @@ cd my-react-app/src/backend
 pip install -r requirements.txt
 ```
 
-Crea `my-react-app/src/backend/.env` desde `.env.example`.
-
-Variables mínimas:
+Crear `my-react-app/src/backend/.env`:
 ```env
 FLASK_DEBUG=true
 SECRET_KEY=tu_secret
@@ -97,6 +100,7 @@ FRONTEND_URL=http://localhost:5173
 SENDGRID_API_KEY=tu_sendgrid_key
 SENDGRID_FROM_EMAIL=tu_correo_verificado
 SENDGRID_FROM_NAME=DiverKids
+GOOGLE_CALENDAR_ENABLED=false
 ```
 
 ### 3) Frontend
@@ -105,13 +109,13 @@ cd my-react-app
 npm install
 ```
 
-Crea `my-react-app/.env` desde `.env.example`:
+Crear `my-react-app/.env`:
 ```env
 VITE_API_URL=http://localhost:5001
 VITE_GOOGLE_MAPS_API_KEY=
 ```
 
-### 4) Seed de base de datos
+### 4) Seed local
 ```bash
 cd my-react-app/src/backend
 python seed.py
@@ -119,7 +123,7 @@ python seed.py
 
 ---
 
-## Ejecutar proyecto
+## Ejecutar en local
 
 ### Backend
 ```bash
@@ -134,25 +138,31 @@ cd my-react-app
 npm run dev
 ```
 
-- Frontend: `http://localhost:5173`
-- Backend: `http://localhost:5001`
+- Frontend local: `http://localhost:5173`
+- Backend local: `http://localhost:5001`
+
+---
+
+## Deploy en producción
+
+- Frontend (Vercel): `https://proyecto-final-diver-kids.vercel.app/`
+- Backend (Railway): `https://diverkids-backend-production.up.railway.app`
 
 ---
 
 ## Credenciales de prueba
 
-Admin (seed):
-- Email: `admin@diverkids.com`
-- Password: `admin123`
+Admin:
+- Email: `diverkidsinfo@gmail.com`
+- Password: usar la contraseña configurada en producción
 
-También puedes crear usuario en `/register`.
-Nota: por seguridad, estas credenciales no se muestran dentro de la interfaz.
+También puedes crear un usuario desde `/register`.
 
 ---
 
-## Rutas principales del frontend
+## Rutas principales (frontend)
 
-- `/` Home
+- `/`
 - `/about`
 - `/contact`
 - `/costumes`
@@ -170,7 +180,7 @@ Nota: por seguridad, estas credenciales no se muestran dentro de la interfaz.
 
 ---
 
-## Endpoints principales de API
+## Endpoints principales (API)
 
 ### Auth
 - `POST /api/signup`
@@ -182,12 +192,14 @@ Nota: por seguridad, estas credenciales no se muestran dentro de la interfaz.
 
 ### Costumes
 - `GET /api/costumes`
+- `GET /api/costumes/:id`
 - `POST /api/costumes` (admin)
 - `PUT /api/costumes/:id` (admin)
 - `DELETE /api/costumes/:id` (admin)
 
 ### Packages
 - `GET /api/packages`
+- `GET /api/packages/:id`
 - `POST /api/packages` (admin)
 - `PUT /api/packages/:id` (admin)
 - `DELETE /api/packages/:id` (admin)
@@ -210,96 +222,56 @@ Nota: por seguridad, estas credenciales no se muestran dentro de la interfaz.
 
 ---
 
-## Estado actual del proyecto
+## Estado del proyecto
 
-✅ Implementado:
+✅ Completado:
 - Full-stack funcional
 - Autenticación JWT
-- Contraseñas cifradas
-- CRUDs principales
-- Panel admin (disfraces + paquetes)
+- Contraseñas cifradas con bcrypt
+- CRUD de disfraces y paquetes (admin)
+- CRUD de eventos y reservas
 - Recuperación de contraseña
+- Deploy de frontend y backend
 
-🛠 Pendiente/mejorable:
-- Deploy final (frontend + backend)
-- Cambiar SQLite a PostgreSQL en producción
-- Mejorar entregabilidad de correos (Domain Authentication en SendGrid)
+🛠 Mejoras futuras:
 - Tests automáticos
+- Mejorar entregabilidad de correos (Domain Authentication en SendGrid)
+- Integraciones adicionales de analítica/notificaciones
 
 ---
 
-## Rúbrica de evaluación (evidencia)
+## Evidencia de rúbrica
 
-### 1) Buen diseño y presentación
-- Cumplido: interfaz responsive, estilos personalizados y navegación por secciones.
-- Evidencia:
-  - Frontend React con componentes y estilos propios.
-  - Vistas principales: Home, Costumes, Packages, Events, Bookings, Dashboard.
-
-### 2) Registro, autenticación y restablecimiento de contraseña
-- Cumplido:
-  - Registro: `/register` + `POST /api/signup`
-  - Login: `/login` + `POST /api/login`
-  - Recuperación: `/forgot-password`, `/reset-password` + endpoints correspondientes
-- Evidencia:
-  - JWT para sesión y rutas protegidas.
-  - Flujo completo de recuperación implementado.
-
-### 3) Contraseñas cifradas (no texto plano)
-- Cumplido:
-  - Hash con Flask-Bcrypt en backend.
-  - Verificación de contraseña al iniciar sesión.
-
-### 4) Backend/API a medida
-- Cumplido:
-  - API propia en Flask para auth, disfraces, paquetes, eventos, reservas y contactos.
-
-### 5) Mínimo 3 vistas + al menos 1 CRUD completo
-- Cumplido de sobra:
-  - Vistas: más de 10 rutas frontend.
-  - CRUD completo: Costumes, Packages, Events y Bookings.
-  - Admin con gestión de disfraces y paquetes.
-
-### 6) Integración con API/librerías de terceros
-- Cumplido:
-  - SendGrid para emails.
-  - Integración de contacto directo por WhatsApp.
-  - Librerías UI y utilidades modernas en frontend.
-
-### 7) Deploy en producción
-- En progreso:
-  - Falta cerrar despliegue final de frontend y backend.
-  - Recomendado: Vercel/Netlify (frontend) + Render/Railway (backend).
+1. Diseño y presentación: cumplido (interfaz responsive, estilos propios).
+2. Registro, login y restablecimiento: cumplido.
+3. Contraseña cifrada: cumplido (bcrypt).
+4. Backend/API a medida: cumplido.
+5. Mínimo 3 vistas + CRUD: cumplido ampliamente.
+6. Integración de terceros: cumplido (SendGrid, WhatsApp, Calendar opcional).
+7. Producción: cumplido (Vercel + Railway).
 
 ---
 
-## Product backlog (resumen de historias)
+## Product Backlog (resumen)
 
-Historias principales implementadas:
-- Como usuario, quiero registrarme para acceder a funcionalidades privadas.
-- Como usuario, quiero iniciar sesión para ver mi dashboard.
-- Como usuario, quiero recuperar mi contraseña por email.
-- Como usuario, quiero ver catálogo de disfraces y paquetes.
-- Como usuario, quiero reservar servicios para un evento.
-- Como usuario, quiero crear/editar/eliminar mis eventos.
-- Como admin, quiero crear/editar/eliminar disfraces.
-- Como admin, quiero crear/editar/eliminar paquetes.
-- Como admin, quiero revisar reservas y mensajes de contacto.
-
-Historias pendientes/micro-mejoras:
-- Como equipo, queremos desplegar en producción con variables seguras.
-- Como equipo, queremos mejorar la entregabilidad de emails (Domain Authentication).
-- Como equipo, queremos agregar tests automáticos.
+Historias implementadas:
+- Registro de usuario
+- Inicio de sesión
+- Recuperación de contraseña
+- Ver catálogo de disfraces y paquetes
+- Crear reservas y eventos
+- Admin CRUD disfraces
+- Admin CRUD paquetes
+- Admin gestión de contactos
+- Deploy frontend/backend
 
 ---
 
 ## Autor
 
-Jean Aguiluz
-- GitHub: [@jeanaguiluz](https://github.com/jeanaguiluz)
+Jean Aguiluz  
+GitHub: [@jeanaguiluz](https://github.com/jeanaguiluz)
 
 ---
 
-## Nota
-
-Este proyecto fue desarrollado como parte del proyecto final de 4Geeks Academy.
+Proyecto desarrollado para el proyecto final de **4Geeks Academy**.
