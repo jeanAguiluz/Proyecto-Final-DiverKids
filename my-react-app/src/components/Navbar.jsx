@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/useAuth';
 import logo from "../imgs/logocirculo1.svg";
@@ -8,14 +8,58 @@ import "../styles/Navbar.css";
 export default function Navbar() {
     const { user, logout } = useAuth();
     const [isOpen, setIsOpen] = useState(false);
+    const [isAdminMenuOpen, setIsAdminMenuOpen] = useState(false);
     const location = useLocation();
+    const adminMenuRef = useRef(null);
 
-    const toggleMenu = () => setIsOpen(!isOpen);
-    const closeMenu = () => setIsOpen(false);
+    const toggleMenu = () => {
+        setIsOpen((prevOpen) => {
+            const nextOpen = !prevOpen;
+            if (!nextOpen) {
+                setIsAdminMenuOpen(false);
+            }
+            return nextOpen;
+        });
+    };
+
+    const closeMenu = () => {
+        setIsOpen(false);
+        setIsAdminMenuOpen(false);
+    };
+
+    const toggleAdminMenu = () => {
+        setIsAdminMenuOpen((prevOpen) => !prevOpen);
+    };
 
     useEffect(() => {
         closeMenu();
     }, [location.pathname]);
+
+    useEffect(() => {
+        if (!isAdminMenuOpen) return undefined;
+
+        const handleOutsideClick = (event) => {
+            if (adminMenuRef.current && !adminMenuRef.current.contains(event.target)) {
+                setIsAdminMenuOpen(false);
+            }
+        };
+
+        const handleEscape = (event) => {
+            if (event.key === 'Escape') {
+                setIsAdminMenuOpen(false);
+            }
+        };
+
+        document.addEventListener('mousedown', handleOutsideClick);
+        document.addEventListener('touchstart', handleOutsideClick);
+        document.addEventListener('keydown', handleEscape);
+
+        return () => {
+            document.removeEventListener('mousedown', handleOutsideClick);
+            document.removeEventListener('touchstart', handleOutsideClick);
+            document.removeEventListener('keydown', handleEscape);
+        };
+    }, [isAdminMenuOpen]);
 
     return (
         <nav className="navbar">
@@ -25,8 +69,8 @@ export default function Navbar() {
                 </Link>
             </div>
 
-            {/* Botón hamburguesa */}
-            <button className="hamburger" onClick={toggleMenu}>
+            {/* Boton hamburguesa */}
+            <button type="button" className="hamburger" onClick={toggleMenu}>
                 ☰
             </button>
 
@@ -38,23 +82,35 @@ export default function Navbar() {
                 <Link to="/about" onClick={closeMenu}>Nosotros</Link>
                 <Link to="/contact" onClick={closeMenu}>Contacto</Link>
 
-                {/* Mostrar según autenticación */}
+                {/* Mostrar segun autenticacion */}
                 {user ? (
                     <>
                         <Link to="/dashboard" onClick={closeMenu}>Dashboard</Link>
                         {user.role === 'admin' && (
-                            <>
-                                <Link to="/admin/costumes" onClick={closeMenu}>Admin Disfraces</Link>
-                                <Link to="/admin/packages" onClick={closeMenu}>Admin Paquetes</Link>
-                                <Link to="/admin/contacts" onClick={closeMenu}>Admin Contactos</Link>
-                            </>
+                            <div className={`admin-menu ${isAdminMenuOpen ? 'open' : ''}`} ref={adminMenuRef}>
+                                <button
+                                    type="button"
+                                    className="admin-menu-trigger"
+                                    onClick={toggleAdminMenu}
+                                    aria-expanded={isAdminMenuOpen}
+                                    aria-haspopup="true"
+                                >
+                                    Admin
+                                    <span className="admin-menu-caret" aria-hidden="true">▾</span>
+                                </button>
+                                <div className={`admin-submenu ${isAdminMenuOpen ? 'open' : ''}`}>
+                                    <Link to="/admin/costumes" onClick={closeMenu}>Admin Disfraces</Link>
+                                    <Link to="/admin/packages" onClick={closeMenu}>Admin Paquetes</Link>
+                                    <Link to="/admin/contacts" onClick={closeMenu}>Admin Contactos</Link>
+                                </div>
+                            </div>
                         )}
                         <button className="btn-logout" onClick={() => { closeMenu(); logout(); }}>
-                            Cerrar Sesión
+                            Cerrar Sesion
                         </button>
                     </>
                 ) : (
-                    <Link to="/login" className="btn-login" onClick={closeMenu}>Iniciar Sesión</Link>
+                    <Link to="/login" className="btn-login" onClick={closeMenu}>Iniciar Sesion</Link>
                 )}
             </div>
             {isOpen && <div className="overlay" onClick={closeMenu} aria-hidden="true" />}

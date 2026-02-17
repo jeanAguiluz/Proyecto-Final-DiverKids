@@ -70,7 +70,8 @@
 /* Links y botones */
 .navbar-right a,
 .btn-logout,
-.btn-login {
+.btn-login,
+.admin-menu-trigger {
     color: white;
     margin-left: 20px;
     text-decoration: none;
@@ -80,8 +81,65 @@
 
 .navbar-right a:hover,
 .btn-logout:hover,
-.btn-login:hover {
+.btn-login:hover,
+.admin-menu-trigger:hover,
+.admin-menu.open .admin-menu-trigger {
     color: aqua;
+}
+
+.admin-menu {
+    position: relative;
+    margin-left: 20px;
+}
+
+.admin-menu-trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    border: none;
+    background: none;
+    cursor: pointer;
+    padding: 0;
+    margin-left: 0;
+}
+
+.admin-menu-caret {
+    font-size: 0.7rem;
+    line-height: 1;
+    transition: transform 0.25s ease;
+}
+
+.admin-menu.open .admin-menu-caret {
+    transform: rotate(180deg);
+}
+
+.admin-submenu {
+    position: absolute;
+    top: calc(100% + 10px);
+    left: 0;
+    display: none;
+    flex-direction: column;
+    min-width: 220px;
+    padding: 8px 0;
+    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.24);
+    background: rgba(50, 19, 95, 0.95);
+    box-shadow: 0 14px 32px rgba(0, 0, 0, 0.32);
+    z-index: 1400;
+}
+
+.admin-submenu.open {
+    display: flex;
+}
+
+.admin-submenu a {
+    margin: 0;
+    padding: 8px 14px;
+    white-space: nowrap;
+}
+
+.admin-submenu a:hover {
+    background: rgba(255, 255, 255, 0.1);
 }
 
 .btn-logout,
@@ -114,7 +172,7 @@
     color: aqua;
 }
 
-/* Botón hamburguesa */
+/* Boton hamburguesa */
 .hamburger {
     display: none;
     font-size: 28px;
@@ -163,8 +221,41 @@
 
     .navbar-right a,
     .btn-logout,
-    .btn-login {
+    .btn-login,
+    .admin-menu-trigger {
         margin: 15px 0;
+    }
+
+    .admin-menu {
+        width: 100%;
+        margin-left: 0;
+    }
+
+    .admin-menu-trigger {
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .admin-submenu {
+        position: static;
+        width: 100%;
+        min-width: 0;
+        padding: 4px 0 0 12px;
+        border: none;
+        border-left: 1px solid rgba(255, 255, 255, 0.35);
+        border-radius: 0;
+        background: transparent;
+        box-shadow: none;
+    }
+
+    .admin-submenu a {
+        margin: 8px 0;
+        padding: 0;
+        white-space: normal;
+    }
+
+    .admin-submenu a:hover {
+        background: transparent;
     }
 
     .logo {
